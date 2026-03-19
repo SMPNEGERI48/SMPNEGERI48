@@ -750,7 +750,7 @@
       <!-- FIREBASE SDK -->
       <script type="module">
          import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-         import { getDatabase, ref, push, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+         import { getDatabase, ref, push,set, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
          
          const app = initializeApp({
            apiKey:"AIzaSyDgauEgEZYCDsqLhGPVGMe7RjbBiswDFIA",
@@ -765,6 +765,7 @@
          
          window.fbPush   = (p,d) => push(ref(db,p),d);
          window.fbRemove = (p)   => remove(ref(db,p));
+         window.fbSet = (p,d) => set(ref(db,p),d);
          
          onValue(ref(db,'transactions'), s => {
            const r = s.val()||{};
@@ -1075,9 +1076,13 @@
            if(o!==window.PINS[CR]){toast('PIN lama salah!','err');return;}
            if(n1.length!==4){toast('PIN baru harus 4 digit!','err');return;}
            if(n1!==n2){toast('Konfirmasi tidak cocok!','err');return;}
-           window.PINS[CR]=n1; closeM('mPin');
-           ['pOld','pN1','pN2'].forEach(id=>document.getElementById(id).value='');
-           toast('PIN berhasil diubah! 🔐');
+           try{
+  await window.fbSet('pins/'+CR, n1);
+  window.PINS[CR]=n1;
+  closeM('mPin');
+  ['pOld','pN1','pN2'].forEach(id=>document.getElementById(id).value='');
+  toast('PIN berhasil disimpan! 🔐');
+}catch(e){toast('Gagal: '+e.message,'err');}
          }
          
          // export & print
