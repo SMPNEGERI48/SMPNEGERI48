@@ -1185,22 +1185,18 @@
          function installPWA(){if(deferredPrompt){deferredPrompt.prompt();deferredPrompt.userChoice.then(()=>{deferredPrompt=null;document.getElementById('installBtn').style.display='none';});}}
          window.addEventListener('appinstalled',()=>{document.getElementById('installBtn').style.display='none';});
       
-      <!-- ONESIGNAL PUSH NOTIFICATION -->
+<!-- ONESIGNAL FIX CLEAN -->
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
 <script>
   window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(async function(OneSignal) {
-    await OneSignal.init({
-      appId: "d1e36f88-1e20-4b25-a54f-9d2c033a3af3",
-      notifyButton: {
-        enable: true
-      }
-    } ) ;
-
-    // Paksa muncul popup izin notif
-    OneSignal.showSlidedownPrompt();
+  OneSignalDeferred.push(function(OneSignal) {
+    OneSignal.init({
+      appId: "d1e36f88-1e20-4b25-a54f-9d2c033a3af3"
+    });
   });
-  </script>
+</script>
+         
    </script>
    </body>
 </html>
