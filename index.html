@@ -1125,20 +1125,47 @@
          function closeM(id){document.getElementById(id).classList.remove('open');}
          document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
       
-         // ══ NOTIFIKASI via OneSignal ══
-         function sendNotif(title, body){
-           // In-app toast notification
-           const w = document.getElementById('tw');
-           if(w){
-             const t = document.createElement('div');
-             t.className = 'toast info';
-             t.innerHTML = '<span>🔔</span><span><strong>' + title + '</strong><br><span style="font-weight:400;font-size:.78rem">' + body + '</span></span>';
-             w.appendChild(t);
-             setTimeout(()=>{ t.style.opacity='0'; t.style.transition='.3s'; setTimeout(()=>t.remove(), 300); }, 5000);
-           }
-           // OneSignal will handle push notification automatically
-           console.log('Notif sent:', title, body);
-         }
+         
+         <!-- OneSignal SDK -->
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+<script>
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+
+OneSignalDeferred.push(function(OneSignal) {
+  OneSignal.init({
+    appId: "d1e36f88-1e20-4b25-a54f-9d2c033a3af3",
+    notifyButton: { enable: true }
+  });
+
+  // 🔥 CEK STATUS SUBSCRIBER
+  OneSignal.isPushNotificationsEnabled().then(function(isEnabled) {
+    console.log("Subscribed:", isEnabled);
+  });
+
+  OneSignal.getUserId().then(function(userId) {
+    console.log("User ID:", userId);
+  });
+});
+
+
+// ══ NOTIFIKASI (gabungan) ══
+function sendNotif(title, body){
+
+  // 🔔 Toast (notif di dalam web)
+  const w = document.getElementById('tw');
+  if(w){
+    const t = document.createElement('div');
+    t.className = 'toast info';
+    t.innerHTML = '<span>🔔</span><span><strong>' + title + '</strong><br><span style="font-weight:400;font-size:.78rem">' + body + '</span></span>';
+    w.appendChild(t);
+    setTimeout(()=>{ t.style.opacity='0'; t.style.transition='.3s'; setTimeout(()=>t.remove(), 300); }, 5000);
+  }
+
+  // 🔥 LOG (biar keliatan jalan)
+  console.log("Notif:", title, body);
+}
+</script>
 
          // ══ PWA INSTALL ══
          let deferredPrompt;
