@@ -1190,10 +1190,7 @@ function installPWA(){
 window.addEventListener('appinstalled', () => {
   document.getElementById('installBtn').style.display = 'none';
 });
-</script>
-
-
-         // ══ PWA INSTALL ══
+      // ══ PWA INSTALL ══
          let deferredPrompt;
          window.addEventListener('beforeinstallprompt', e => {
            e.preventDefault();
@@ -1211,14 +1208,6 @@ window.addEventListener('appinstalled', () => {
          }
          window.addEventListener('appinstalled', () => {
            document.getElementById('installBtn').style.display = 'none';
-         });
-
-         // ══ SERVICE WORKER - register AFTER app loads ══
-         window.addEventListener('load', () => {
-           if('serviceWorker' in navigator){
-               .then(reg => console.log('SW registered'))
-               .catch(e => console.log('SW error:', e));
-           }
          });
       </script>
    </body>
